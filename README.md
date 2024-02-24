@@ -1,6 +1,10 @@
 # 1sem
 Shorten long videos to one second every minute (1sem).
 
+Effectively you can take a 30 minute video and shorten it to 30 seconds.
+
+Why would anyone want this?
+
 # Usage
 ```
 php -f 1sem.php video.file
