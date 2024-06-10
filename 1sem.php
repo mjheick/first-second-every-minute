@@ -8,9 +8,12 @@ if (!file_exists($ffprobe)) { die("ffprobe not found\n"); }
 if (!file_exists($ffmpeg)) { die("ffmpeg not found\n"); }
 if (!isset($argv[1])) { die("need video file as parameter\n"); }
 if (!file_exists($argv[1])) { die("file ${argv[1]} doesn't exist\n"); }
+if (file_exists('filename.txt')) { unlink('filename.txt'); }
+
 $input = $argv[1];
 $filename = pathinfo($input, PATHINFO_FILENAME);
 $extension = pathinfo($input, PATHINFO_EXTENSION);
+$extension = 'mp4'; /* Assume defaults */
 $output = $filename . '.1sem.' . $extension;
 
 /* Lets get video length */
@@ -54,10 +57,11 @@ echo "Combining: ";
 /* Combine them all and run the demuxer */
 $fp = fopen($filename . '.txt', 'wt');
 for ($inc = 0; $inc < $increment; $inc++) {
-	fwrite($fp, 'file ' . escapeshellarg($filename . '-' . $inc . '.' . $extension) . "\n"); 
+	fwrite($fp, 'file ' . escapeshellarg($filename . '-' . $inc . '.' . $extension) . "\n");
 }
 fclose($fp);
-exec( $ffmpeg . ' -v quiet -f concat -i ' . escapeshellarg($filename . '.txt') . ' -c copy ' . $output );
+exec( $ffmpeg . ' -v quiet -f concat -safe 0 -i ' . escapeshellarg($filename . '.txt') . ' -c copy ' . escapeshellarg($output) );
+file_put_contents('filename.txt', $output);
 echo "\n";
 
 /* Clean up files */
