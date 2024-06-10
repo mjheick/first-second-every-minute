@@ -22,3 +22,4 @@ mp4 was chosen later as converting from one format to 1-second formats yielded b
 - https://shotstack.io/learn/use-ffmpeg-to-concatenate-video/
 - https://trac.ffmpeg.org/wiki/Seeking
 - https://stackoverflow.com/questions/38996925/ffmpeg-concat-unsafe-file-name
+- https://unix.stackexchange.com/questions/412519/ffmpeg-protocol-not-found-for-normal-file-name
