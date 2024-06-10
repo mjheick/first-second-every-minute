@@ -53,14 +53,15 @@ while ($seconds_progress < $duration) {
 }
 echo "\n";
 
-echo "Combining: ";
 /* Combine them all and run the demuxer */
-$fp = fopen($filename . '.txt', 'wt');
+echo "Combining: ";
+$concat = 'concat-' . strval(time()) . '.txt';
+$fp = fopen($concat, 'wt');
 for ($inc = 0; $inc < $increment; $inc++) {
 	fwrite($fp, 'file ' . escapeshellarg($filename . '-' . $inc . '.' . $extension) . "\n");
 }
 fclose($fp);
-exec( $ffmpeg . ' -v quiet -f concat -safe 0 -i ' . escapeshellarg($filename . '.txt') . ' -c copy ' . escapeshellarg('file:' . $output) );
+exec( $ffmpeg . ' -v quiet -f concat -safe 0 -i ' . escapeshellarg($concat) . ' -c copy ' . escapeshellarg('file:' . $output) );
 file_put_contents('filename.txt', $output);
 echo "\n";
 
