@@ -12,9 +12,8 @@ if (file_exists('filename.txt')) { unlink('filename.txt'); }
 
 $input = $argv[1];
 $filename = pathinfo($input, PATHINFO_FILENAME);
-$extension = pathinfo($input, PATHINFO_EXTENSION);
 $extension = 'mp4'; /* Assume defaults */
-$output = $filename . '.1sem.' . $extension;
+$output = $filename . '.fsem.' . $extension;
 
 /* Lets get video length */
 $command_output = '';
@@ -26,6 +25,9 @@ if (is_null($json)) { die("error in decoding output from ffprobe\n"); }
 if (!isset($json['format']['duration'])) { die("cannot retrieve video duration\n"); }
 $duration = $json['format']['duration'];
 
+/* A fixed timestamp for work files */
+$timestamp = strval(time());
+
 /* Now we loop every 60 seconds until we're past the video */
 echo "Extracting: ";
 $increment = 0;
@@ -36,7 +38,7 @@ while ($seconds_progress < $duration) {
 	echo '.';
 	$shell_minute = $minute;
 	if ($minute < 10) { $shell_minute = '0' . $minute; }
-	$incremental_filename = $filename . '-' . $increment . '.' . $extension;
+	$incremental_filename = 'source' . '-' . $timestamp . '-' . $increment . '.' . $extension;
 	if (file_exists($incremental_filename)) {
 		unlink($incremental_filename);
 	}
@@ -55,10 +57,10 @@ echo "\n";
 
 /* Combine them all and run the demuxer */
 echo "Combining: ";
-$concat = 'concat-' . strval(time()) . '.txt';
+$concat = 'concat-' . $timestamp . '.txt';
 $fp = fopen($concat, 'wt');
 for ($inc = 0; $inc < $increment; $inc++) {
-	fwrite($fp, 'file ' . escapeshellarg($filename . '-' . $inc . '.' . $extension) . "\n");
+	fwrite($fp, 'file ' . escapeshellarg('source' . '-' . $timestamp . '-' . $inc . '.' . $extension) . "\n");
 }
 fclose($fp);
 exec( $ffmpeg . ' -v quiet -f concat -safe 0 -i ' . escapeshellarg($concat) . ' -c copy ' . escapeshellarg('file:' . $output) );
@@ -66,7 +68,7 @@ file_put_contents('filename.txt', $output);
 echo "\n";
 
 /* Clean up files */
-unlink($filename . '.txt');
+unlink($concat);
 for ($inc = 0; $inc < $increment; $inc++) {
-	unlink($filename . '-' . $inc . '.' . $extension);
+	unlink('source' . '-' . $timestamp . '-' . $inc . '.' . $extension);
 }
