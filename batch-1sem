@@ -1,8 +1,0 @@
-#!/bin/bash
-IFS=$'\n';
-for FILE in `find . -type f`; do
-  if [ "$FILE" == "." ]; then continue; fi;
-  if [ "$FILE" == "./batch-1sem" ]; then continue; fi;
-  if [ "$FILE" == "./1sem.php" ]; then continue; fi;
-  php -f 1sem.php "$FILE"
-done;

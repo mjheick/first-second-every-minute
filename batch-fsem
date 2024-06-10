@@ -1,0 +1,8 @@
+#!/bin/bash
+IFS=$'\n';
+for FILE in `find . -type f`; do
+  if [ "$FILE" == "." ]; then continue; fi;
+  if [ "$FILE" == "./batch-fsem" ]; then continue; fi;
+  if [ "$FILE" == "./fsem.php" ]; then continue; fi;
+  php -f fsem.php "$FILE"
+done;
