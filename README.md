@@ -9,7 +9,9 @@ Why would anyone want this?
 ```
 php -f 1sem.php video.file
 ```
-output filename is video.1sem.file
+output filename is video.1sem.mp4
+
+mp4 was chosen later as converting from one format to 1-second formats yielded bad results.
 
 # Requirements
 - PHP (created and tested on 8.3.0RC4)
@@ -19,3 +21,4 @@ output filename is video.1sem.file
 - https://unix.stackexchange.com/questions/283878
 - https://shotstack.io/learn/use-ffmpeg-to-concatenate-video/
 - https://trac.ffmpeg.org/wiki/Seeking
+- https://stackoverflow.com/questions/38996925/ffmpeg-concat-unsafe-file-name
