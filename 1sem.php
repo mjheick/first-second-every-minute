@@ -41,7 +41,7 @@ while ($seconds_progress < $duration) {
 		unlink($incremental_filename);
 	}
 	if (!file_exists($incremental_filename)) {
-		exec( $ffmpeg . ' -v quiet -ss ' . $hour . ':' . $shell_minute . ':0.0 -i ' . escapeshellarg($input) . ' -t 1 ' . escapeshellarg($incremental_filename), $throwaway );
+		exec( $ffmpeg . ' -v quiet -ss ' . $hour . ':' . $shell_minute . ':0.0 -i ' . escapeshellarg($input) . ' -t 1 ' . escapeshellarg('file:' . $incremental_filename), $throwaway );
 	}
 	$increment = $increment + 1;
 	$minute = $minute + 1;
@@ -60,7 +60,7 @@ for ($inc = 0; $inc < $increment; $inc++) {
 	fwrite($fp, 'file ' . escapeshellarg($filename . '-' . $inc . '.' . $extension) . "\n");
 }
 fclose($fp);
-exec( $ffmpeg . ' -v quiet -f concat -safe 0 -i ' . escapeshellarg($filename . '.txt') . ' -c copy ' . escapeshellarg($output) );
+exec( $ffmpeg . ' -v quiet -f concat -safe 0 -i ' . escapeshellarg($filename . '.txt') . ' -c copy ' . escapeshellarg('file:' . $output) );
 file_put_contents('filename.txt', $output);
 echo "\n";
 
