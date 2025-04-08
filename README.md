@@ -1,4 +1,4 @@
-# fsem
+# first-second-every-minute
 Shorten long videos to one second every minute using the First Second of Every Minute (fsem).
 
 Effectively you can take a 30 minute video and shorten it to 30 seconds.
